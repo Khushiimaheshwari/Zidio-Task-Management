@@ -1,10 +1,17 @@
+import { Outlet } from 'react-router-dom'
 import './App.css'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
 
 function App() {
 
   return(
-    <div className='flex justify-center p-10'>
-      <h1 className='text-5xl font-bold'>Lets Start</h1>
+    <div>
+      <Header/>
+      <main>
+          <Outlet/>
+      </main>
+      <Footer/>
     </div>
   )
 }
