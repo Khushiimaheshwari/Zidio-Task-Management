@@ -1,8 +1,11 @@
 import React from 'react'
 import Container from '../Container/Container'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Header() {
+
+    const navigate = useNavigate();
+
     return (
         <header className='flex w-full bg-blue-200'>
             <Container>
@@ -15,7 +18,8 @@ function Header() {
                     <ul>
                         {/* If not logged In */}
                         <li>
-                            <button>
+                            <button 
+                            onClick={ () => navigate("/login")}>
                                 Login
                             </button>
                         </li>
@@ -24,7 +28,7 @@ function Header() {
                         <li>
                             {/* Logout */}
                         </li>
-                    </ul>
+                    </ul> 
                 </nav>
             </Container>
         </header>
