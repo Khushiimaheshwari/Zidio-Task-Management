@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -65,15 +65,25 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
+    <div className="flex flex-col w-full items-center justify-center sm:p-6 smd:px-15 md:p-1">
+      <h2 className="text-center text-blue-900 md:text-2xl sm:text-lg mt-4 font-bold leading-tight">Signup to create account</h2>
+        <p className="mt-2 mb-8 sm:text-sm md:text-base text-center text-black/60">
+            Already have an account?&nbsp;
+            <Link
+                to="/login"
+                className="font-bold text-primary transition-all duration-200 text-sky-600 hover:animate-pulse">
+                Sign In
+            </Link>
+        </p>
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Name</label>
           <input
             type="text"
             id="username"
             name="username"
+            placeholder="Enter Name"
             value={formData.username}
             onChange={handleChange}
             required
@@ -87,6 +97,7 @@ const SignUp = () => {
             type="email"
             id="email"
             name="email"
+            placeholder="enter email"
             value={formData.email}
             onChange={handleChange}
             required
@@ -100,6 +111,7 @@ const SignUp = () => {
             type="password"
             id="password"
             name="password"
+            placeholder="enter password"
             value={formData.password}
             onChange={handleChange}
             required
