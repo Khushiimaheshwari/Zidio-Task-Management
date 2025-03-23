@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import apiService from '../connection_services/service';
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
-  
-  const [errors, setErrors] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({username: '',email: '',password: '',});
+  const [errors, setErrors] = useState({username: '',email: '',password: '',});
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,15 +47,30 @@ const SignUp = () => {
     return valid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      // Handle successful form submission (e.g., make API call)
-      alert('Form submitted successfully!');
-      // Reset form
-      setFormData({ username: '', email: '', password: '' });
+    if (!validateForm()) return;
+
+    try {
+      
+      await apiService.signup({
+        Name: formData.username,
+        Email: formData.email,
+        Password: formData.password,
+      })
+      .then(() => {
+        console.log("Login Successful")
+        navigate("/");
+      })
+     .catch((err) => console.error(err));
+  
+     setFormData({email: '', password: '' });
+
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || "SignUp failed!");
     }
+
   };
 
   return (

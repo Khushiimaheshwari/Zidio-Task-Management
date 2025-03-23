@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux"
+import { loginUser } from '../store/authSlice';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({email: '',password: ''});
+  const [errors, setErrors] = useState({email: '',password: ''});
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,14 +41,27 @@ const Login = () => {
     return valid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      // Handle successful login (e.g., make an API call)
-      alert('Logged in successfully!');
-      // Reset form (optional)
-      setFormData({ email: '', password: '' });
+    if (!validateForm()) return;
+
+    try {
+        await dispatch(loginUser({
+          Email: formData.email,
+          Password: formData.password,
+        }))
+        .then( () => {
+          console.log("Login Successful")
+          navigate("/");
+        })
+        .catch((err) => console.error(err)
+      );
+
+      setFormData({email: '', password: '' });
+      
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || "Login failed!");
     }
   };
 

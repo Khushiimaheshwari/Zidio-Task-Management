@@ -27,7 +27,9 @@ export class AuthService {
             const newUser = new User({ Name, Email, Password: hashedPassword });
             await newUser.save();
 
-            return this.login({ Email, Password });
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+            return { token, user: newUser };
             
         } catch (error) {
             throw error;
