@@ -1,40 +1,50 @@
-const API_URL = "http://localhost:5000"; // Backend URL
-
 const apiService = {
   login: async (credentials) => {
-    const response = await fetch(`${API_URL}/login`, {
+    const response = await fetch("http://localhost:5000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),
     });
 
-    alert("Login Successful")
-
     if (!response.ok) {
       const errorData = await response.json();
-      alert(errorData)
+      alert(JSON.stringify(errorData))
       throw new Error(errorData.error || "Login failed");
     }
+
+    console.log("Login Successful!");
 
     return await response.json();
   },
 
   signup: async(credentials) => {
-    const response = await fetch(`${API_URL}/signup`, {
+
+    if (!credentials.Email || !credentials.Password || !credentials.Name) {
+      alert("Please fill in all fields!");
+      return;
+    }
+
+    console.log("📤 Sending credentials:", credentials);
+
+    const response = await fetch("http://localhost:5000/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
     });
 
-    alert("Signup Successful")
-
     if(!response.ok){
         const errorData = await response.json();
-        alert(errorData)
+        console.log("ERROR in service.js");
+        alert(JSON.stringify(errorData))
         throw new Error(errorData.error || "Signup failed");
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log("Response from server:", data);
+    
+    console.log("SignUp Successful!");
+
+    return data;
   }
 };
 

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import apiService from '../connection_services/service';
+// import { useDispatch } from 'react-redux'; 
+import { Link, useNavigate } from 'react-router-dom';
+import apiService from '../connection_services/service.js';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({username: '',email: '',password: '',});
   const [errors, setErrors] = useState({username: '',email: '',password: '',});
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,26 +50,25 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Trying To SignUp ...");
 
     if (!validateForm()) return;
 
     try {
-      
       await apiService.signup({
         Name: formData.username,
         Email: formData.email,
         Password: formData.password,
       })
-      .then(() => {
-        console.log("Login Successful")
-        navigate("/");
-      })
-     .catch((err) => console.error(err));
+
+      alert("SignUp Successful")
+      navigate("/");
   
-     setFormData({email: '', password: '' });
+      setFormData({username: '', email: '', password: '' });
 
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "SignUp failed!");
+      console.error(error);
+      setErrors(error.message || "SignUp failed!");
     }
 
   };

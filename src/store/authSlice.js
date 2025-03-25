@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import apiService from "../connection_services/service"; 
+import apiService from "../connection_services/service.js"; 
 
 const initialState = {
   user: null,
@@ -39,6 +39,7 @@ export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.acti
 export default authSlice.reducer;
 
 export const loginUser = (credentials) => async (dispatch) => {
+  console.log("Currently in authSlice.js");
   dispatch(loginStart());
   try {
     const response = await apiService.login(credentials);
